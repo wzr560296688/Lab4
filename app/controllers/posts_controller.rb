@@ -10,8 +10,8 @@ class PostsController < ApplicationController
 		@post = Post.new
 	end
 	def create
-		#@post = Post.new(params[:post]) <- older version
-		@post = Post.new(params.require(:post).permit(:title, :content))
+		@post = Post.new(params[:post])
+		#@post = Post.new(params.require(:post).permit(:title, :content))
 		if @post.save
 		redirect_to posts_path, :notice => "Successfully created!"
 		else
@@ -29,6 +29,11 @@ class PostsController < ApplicationController
       end
     end
 	end
-	def destory
+	def destroy
+		@post = Post.find(params[:id])
+    	@post.destroy
+    	    respond_to do |format|
+	      format.html { redirect_to posts_path }
+	end
 	end
 end
